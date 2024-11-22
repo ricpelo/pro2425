@@ -46,14 +46,9 @@ def cambiar_elemento(lst):
         print("La lista está vacía.")
         return
     mostrar_elementos(lst)
-    try:
-        indice = int(input("Introduzca el índice del elemento a cambiar: "))
-        elem = input("Introduzca el elemento nuevo: ")
-        lst[indice] = elem
-    except ValueError:
-        print("El índice introducido no es un número.")
-    except IndexError:
-        print("El índice introducido no es válido.")
+    indice = int(input("Introduzca el índice del elemento a cambiar: "))
+    elem = input("Introduzca el elemento nuevo: ")
+    lst[indice] = elem
 
 
 def eliminar_elemento(lst):
@@ -61,30 +56,31 @@ def eliminar_elemento(lst):
     if lst == []:
         print("La lista está vacía.")
         return
+    indice = int(input("Introduzca el índice del elemento a eliminar: "))
+    del lst[indice]
+
+
+lista = []
+while True:
     try:
-        indice = int(input("Introduzca el índice del elemento a eliminar: "))
-        del lst[indice]
+        mostrar_menu()
+        opc = elegir_opcion()
+        if opc == "1":
+            anyadir_elemento(lista)
+        elif opc == "2":
+            cambiar_elemento(lista)
+        elif opc == "3":
+            eliminar_elemento(lista)
+    #    elif opc == "4":
+    #        eliminar_todos(lista)
+        elif opc == "5":
+            mostrar_elementos(lista)
+        elif opc == "0":
+            break
+        else:
+            print("Opción incorrecta")
     except ValueError:
         print("El índice introducido no es un número")
     except IndexError:
         print("El índice introducido no es válido.")   
 
-
-lista = []
-while True:
-    mostrar_menu()
-    opc = elegir_opcion()
-    if opc == "1":
-        anyadir_elemento(lista)
-    elif opc == "2":
-        cambiar_elemento(lista)
-    elif opc == "3":
-        eliminar_elemento(lista)
-#    elif opc == "4":
-#        eliminar_todos(lista)
-    elif opc == "5":
-        mostrar_elementos(lista)
-    elif opc == "0":
-        break
-    else:
-        print("Opción incorrecta")
