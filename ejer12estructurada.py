@@ -56,8 +56,9 @@ def eliminar_elemento(lst):
     if lst == []:
         print("La lista está vacía.")
         return
-    indice = int(input("Introduzca el índice del elemento a eliminar: "))
-    del lst[indice]
+    elem = input("Introduzca el valor del elemento a eliminar: ")
+    while elem in lst:
+        lst.remove(elem)
 
 
 lista = []
