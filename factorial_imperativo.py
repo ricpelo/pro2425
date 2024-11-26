@@ -10,4 +10,13 @@ def factorial(n: int) -> int:
         n -= 1
     return res
 
-print(factorial(1000))
+
+def factorial_con_for(n: int) -> int:
+    """Calcula el factorial de un número."""
+    res = 1
+    for i in range(1, n + 1):
+        res *= i
+    return res
+
+print(factorial(5))
+print(factorial_con_for(5))

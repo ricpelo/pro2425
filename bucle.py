@@ -10,7 +10,10 @@ while True:
     print("El número no está entre los límites solicitados.")
 
 i = 0
-
 while i <= 10:
     print(num, "x", i, "=", num * i)
     i += 1
+
+for i in range(0, 11):
+    print(num, "x", i, "=", num * i)
+    
