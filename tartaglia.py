@@ -24,8 +24,7 @@ def sobre2(m, n):
 def triangulo(filas) -> None:
     """Dibuja el triángulo de Tartaglia o Pascal."""
     for m in range(filas):
-        print(' ' * 2 * (filas - m), end='')
+        # print(' ' * 2 * (filas - m), end='')
         for n in range(m + 1):
             print(f"{sobre(m, n):3}", end=' ')
         print()
-
