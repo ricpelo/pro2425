@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<raiz>
+    <alumno numero="111">
+        <dni>12312312A</dni>
+        <nombre>
+            <propio>Juan María</propio>
+            <apellidos>García González</apellidos>
+        </nombre>
+        <telefono>666555444</telefono>
+        <nota modificado="si">8</nota>
+    </alumno>
+    <alumno numero="222">
+        <dni>44455566B</dni>
+        <nombre>
+            <propio>María María</propio>
+            <apellidos>Pérez Rodríguez</apellidos>
+        </nombre>
+        <telefono>696969696</telefono>
+        <nota modificado="si">10</nota>
+    </alumno>
+    <alumno id="18">
+        <dni>83828738</dni>
+        <nombre>
+            <propio>Antonia</propio>
+            <apellidos>Roldán Roldán</apellidos>
+        </nombre>
+        <telefono>9569569569634345</telefono>
+        <nota>9.5</nota>
+    </alumno>
+</raiz>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<club>
+    <nombre>Diógenes</nombre>
+    <socios>
+        <socio id="51">
+            <nombre>Winston Churchill</nombre>
+            <direccion>10 Downing St</direccion>
+            <alta>1942-02-13</alta>
+        </socio>
+        <socio id="1">
+            <nombre>Sherlock Holmes</nombre>
+            <direccion>221B Baker St</direccion>
+            <alta>1890-12-14</alta>
+        </socio>
+    </socios>
+</club>
