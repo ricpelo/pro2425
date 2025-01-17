@@ -9,6 +9,9 @@ class Cliente:
         self.apellidos = apellidos
         self.edad = edad
 
+    def nombre_completo(self):
+        return self.nombre + " " + self.apellidos
+
 
 class ContenedorClientes:
     def __init__(self):
