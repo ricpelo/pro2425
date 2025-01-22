@@ -9,6 +9,11 @@ class Cliente:
         self.apellidos = apellidos
         self.edad = edad
 
+    def __eq__(self, otro):
+        if type(self) != type(otro):
+            return NotImplemented
+        return self.dni == otro.dni
+
     def nombre_completo(self):
         return self.nombre + " " + self.apellidos
 
