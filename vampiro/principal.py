@@ -19,12 +19,12 @@ while True:
     elif len(palabras) > 2:
         print("No entiendo lo que dices.")
         continue
-    verbo = v.vocabulario.buscar(palabras[0])
+    verbo = v.Palabra.vocabulario.buscar(palabras[0])
     if verbo is None or verbo.categoria() != v.cat_verbo:
         print("No entiendo lo que dices.")
         continue
     if len(palabras) == 2:
-        nombre = v.vocabulario.buscar(palabras[1])
+        nombre = v.Palabra.vocabulario.buscar(palabras[1])
         if nombre is not None and nombre.categoria() != v.cat_nombre:
             print("No entiendo lo que dices.")
             continue
