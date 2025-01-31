@@ -11,7 +11,7 @@ jugador.lugar().describir()
 
 while True:
     entrada = input("¿Qué haces ahora?\n> ")
-    verbo, nombre = v.decodificar_entrada(entrada)
+    verbo, nombre = v.Vocabulario.decodificar_entrada(entrada)
     if verbo is None:
         continue
     # Si se llega hasta aquí, es que al menos tenemos un verbo.
