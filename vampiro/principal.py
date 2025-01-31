@@ -11,24 +11,10 @@ jugador.lugar().describir()
 
 while True:
     entrada = input("¿Qué haces ahora?\n> ")
-
-    # Decodificar la entrada del jugador:
-    palabras = entrada.split()
-    if len(palabras) == 0:
+    verbo, nombre = v.decodificar_entrada(entrada)
+    if verbo is None:
         continue
-    elif len(palabras) > 2:
-        print("No entiendo lo que dices.")
-        continue
-    verbo = v.Palabra.vocabulario.buscar(palabras[0])
-    if verbo is None or verbo.categoria() != v.cat_verbo:
-        print("No entiendo lo que dices.")
-        continue
-    if len(palabras) == 2:
-        nombre = v.Palabra.vocabulario.buscar(palabras[1])
-        if nombre is not None and nombre.categoria() != v.cat_nombre:
-            print("No entiendo lo que dices.")
-            continue
-
+    # Si se llega hasta aquí, es que al menos tenemos un verbo.
     # Responder al jugador:
     if verbo == v.fin:
         print("Adiós")

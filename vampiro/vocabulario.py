@@ -62,6 +62,22 @@ oeste = Palabra(["oeste", "o"], cat_verbo)
 palanca = Palabra(["palanca"], cat_nombre)
 fin = Palabra(["fin", "acabar", "terminar", "finalizar"], cat_verbo)
 
-# vocabulario = Vocabulario()
-# # vocabulario.insertar(norte).insertar(sur).insertar(palanca).insertar(fin)
-# vocabulario.insertar_varias([norte, sur, este, oeste, palanca, fin])
+def decodificar_entrada(entrada: str) -> tuple[Palabra|None, Palabra|None]:
+    """Decodifica la entrada del jugador."""
+    palabras = entrada.split()
+    verbo, nombre = None, None
+    if len(palabras) == 0:
+        return (None, None)
+    if len(palabras) > 2:
+        print("No entiendo lo que dices.")
+        return (None, None)
+    verbo = Palabra.vocabulario.buscar(palabras[0])
+    if verbo is None or verbo.categoria() != cat_verbo:
+        print("No entiendo lo que dices.")
+        return (None, None)
+    if len(palabras) == 2:
+        nombre = Palabra.vocabulario.buscar(palabras[1])
+        if nombre is not None and nombre.categoria() != cat_nombre:
+            print("No entiendo lo que dices.")
+            return (None, None)
+    return (verbo, nombre)
