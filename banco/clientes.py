@@ -2,7 +2,7 @@
 El módulo de los clientes del banco.
 """
 
-from productos import Producto
+from collections.abc import Iterator
 
 class Cliente:
     """Un cliente del banco."""
@@ -10,7 +10,7 @@ class Cliente:
     def __init__(self, dni: str, nombre: str) -> None:
         self.__set_dni(dni)
         self.set_nombre(nombre)
-        self.__productos: list[Producto] = []
+        self.__productos = []
 
     def __set_dni(self, dni: str) -> None:
         """Asigna el DNI del cliente."""
@@ -28,13 +28,14 @@ class Cliente:
         """Devuelve el nombre del cliente."""
         return self.__nombre
 
-    def agregar_producto(self, producto: Producto) -> None:
+    def agregar_producto(self, producto) -> None:
         """Añade el producto al cliente como titular del mismo."""
         self.__productos.append(producto)
 
-    def eliminar_producto(self, producto: Producto) -> None:
+    def eliminar_producto(self, producto) -> None:
         """Elimina el producto como uno de los productos del cliente."""
         self.__productos.remove(producto)
 
-    def get_productos(self):
+    def get_productos(self) -> Iterator:
+        """Devuelve un iterador con los productos del cliente."""
         return iter(self.__productos)
