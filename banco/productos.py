@@ -105,15 +105,24 @@ class CuentaCorriente(Producto):
     def __init__(self, numero: int, titular) -> None:
         super().__init__(numero, titular)
         self.__saldo = 0.0
+        self.__vinculados: list[Producto] = []
 
     def total(self) -> float:
         return self.__saldo
 
     def agregar_movimiento(self, concepto: str, importe: float):
-        """Agrega un movimiento a la cuenta."""
+        """Agrega un movimiento a la cuenta. Actualiza el saldo de la misma."""
         fecha_hora = Producto.ahora()
         self._agregar_operacion(Operacion(fecha_hora, concepto, importe))
         self.__saldo += importe
+
+    def agregar_vinculado(self, p: Producto) -> None:
+        """Agrega un producto vinculado a la cuenta corriente."""
+        self.__vinculados.append(p)
+
+    def get_vinculados(self) -> Iterator[Producto]:
+        """Recorre los productos vinculados a la cuenta."""
+        return iter(self.__vinculados)
 
 
 class Tarjeta(Producto, ABC):
@@ -140,13 +149,21 @@ class Tarjeta(Producto, ABC):
         """Devuelve el CVV de la tarjeta."""
         return self.__cvv
 
+    def total(self) -> float:
+        # return sum(op.get_importe() for op in self)
+        suma = 0
+        for op in self:
+            suma += op.get_importe()
+        return suma
+
     @abstractmethod
     def comprar(self, importe: float):
         """Lo que pasa cuando se hace una compra con la tarjeta."""
         ...
 
 
-class CreditoInsuficiente(Exception):
+class FondosInsuficientes(Exception):
+    """Excepción que se lanza cuando no hay crédito suficiente para una compra."""
     pass
 
 
@@ -168,14 +185,63 @@ class TarjetaCredito(Tarjeta):
     def comprar(self, importe: float):
         """Cuando se compra con una tarjeta de crédito, se reduce éste."""
         if self.get_credito() < importe:
-            raise CreditoInsuficiente("No hay crédito.")
+            raise FondosInsuficientes("No hay crédito.")
         self.__credito -= importe
         op = Operacion(Producto.ahora(), 'Compra con tarjeta', -importe)
         self._agregar_operacion(op)
 
-    def total(self) -> float:
-        # return sum(op.get_importe() for op in self)
-        suma = 0
-        for op in self:
-            suma += op.get_importe()
-        return suma
+
+class TarjetaDebito(Tarjeta):
+    """Una tarjeta de débito."""
+
+    def __init__(self, numero: int, fecha_caducidad, cvv, cc: CuentaCorriente) -> None:
+        super().__init__(numero, cc.get_titular(), fecha_caducidad, cvv)
+        self.__cc = cc
+        cc.agregar_vinculado(self)
+
+    def get_cc(self) -> CuentaCorriente:
+        """Devuelve la cuenta corriente asociada a la tarjeta de débito."""
+        return self.__cc
+
+    def set_cc(self, cc: CuentaCorriente) -> None:
+        """Asigna la cuenta corriente asociada a la tarjeta de débito."""
+        if cc.get_titular() != self.get_cc().get_titular():
+            raise ValueError("El titular no puede cambiar.")
+        self.__cc = cc
+
+    def comprar(self, importe: float):
+        if self.get_cc().total() < importe:
+            raise FondosInsuficientes("No hay suficiente saldo en la cuenta.")
+        self.get_cc().agregar_movimiento('Compra con tarjeta', -importe)
+        op = Operacion(Producto.ahora(), 'Compra con tarjeta', importe)
+        self._agregar_operacion(op)
+
+
+class Monedero(Tarjeta):
+    """Una tarjeta monedero."""
+
+    def __init__(self, numero: int, titular, fecha_caducidad, cvv) -> None:
+        super().__init__(numero, titular, fecha_caducidad, cvv)
+        self.__saldo = 0.0
+
+    def get_saldo(self) -> float:
+        """Devuelve el saldo del monedero."""
+        return self.__saldo
+
+    def recargar(self, importe: float) -> None:
+        """Recarga el monedero con un importe dado."""
+        importe = round(importe, 2)
+        if importe <= 0:
+            raise ValueError("El importe debe ser mayor que cero.")
+        self.__saldo += importe
+        op = Operacion(Producto.ahora(), 'Recarga de monedero', importe)
+        self._agregar_operacion(op)
+        assert self.__saldo == self.total()
+
+    def comprar(self, importe: float):
+        if self.get_saldo() < importe:
+            raise FondosInsuficientes("No hay saldo suficiente en el monedero.")
+        self.__saldo -= importe
+        op = Operacion(Producto.ahora(), 'Compra con tarjeta', -importe)
+        self._agregar_operacion(op)
+        assert self.__saldo == self.total()
