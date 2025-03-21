@@ -41,6 +41,7 @@ class Aplicacion(tk.Tk):
 
         self.res_label = tk.Label(self, text="Resultado:", fg="blue", font=("Monospace", 18))
         self.res_label.grid(row=4, column=0, padx=5, pady=5, sticky="e")
+        self.celda = tk.Frame(self, bd=2, relief="solid")
         self.res = tk.Label(self, text="", fg="blue", font=("Monospace", 18))
         self.res.grid(row=4, column=1, sticky="w")
 
