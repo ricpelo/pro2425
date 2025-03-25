@@ -6,6 +6,7 @@ from clientes import Cliente
 from productos import CuentaCorriente, TarjetaCredito, TarjetaDebito, Monedero
 
 pepe = Cliente('123123123', 'Pepe Martínez')
+Cliente('321321321', 'Juan González')
 c1 = CuentaCorriente(1, pepe)
 c1.agregar_movimiento('Ingreso', 2000.00)
 c1.agregar_movimiento('Recibo Endesa', -800.00)

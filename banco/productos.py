@@ -5,6 +5,7 @@ Módulo de gestión de los productos del banco.
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from datetime import datetime
+from clientes import Cliente
 
 class Operacion:
     """Una operación realizada sobre un producto."""
@@ -45,18 +46,33 @@ class Operacion:
 class Producto(ABC):
     """Un producto del banco."""
 
+    __productos: dict[int,'Producto'] = {}
+
+    @staticmethod
+    def productos() -> Iterator['Producto']:
+        """Devuelve todos los productos."""
+        return Producto.__productos.values()
+
+    @staticmethod
+    def buscar_por_numero(numero: int) -> 'Producto | None':
+        """
+        Busca un producto por su número. Devuelve None si no existe.
+        """
+        return Producto.__productos.get(numero)
+
     @staticmethod
     def ahora() -> str:
         """Devuelve el instante actual en forma de cadena."""
         return datetime.now().isoformat(' ')[:19]
 
-    def __init__(self, numero: int, titular) -> None:
+    def __init__(self, numero: int, titular: Cliente) -> None:
         self.__set_numero(numero)
         self.__set_titular(titular)
         titular.agregar_producto(self)
         self.__operaciones: list[Operacion] = []
+        Producto.__productos[numero] = self
 
-    def __set_titular(self, titular) -> None:
+    def __set_titular(self, titular: Cliente) -> None:
         """Asigna el titular del producto."""
         self.__titular = titular
 
@@ -68,7 +84,7 @@ class Producto(ABC):
         """Devuelve el número del producto."""
         return self.__numero
 
-    def get_titular(self):
+    def get_titular(self) -> Cliente:
         """Devuelve el titular del producto."""
         return self.__titular
 
