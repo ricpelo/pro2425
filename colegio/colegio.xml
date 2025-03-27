@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<colegio>
+    <alumnos>
+        <alumno mat="X48" edad="6">
+            <nombre>Ana Ruiz</nombre>
+        </alumno>
+        <alumno mat="V33" edad="6">
+            <nombre>Rosa Pérez</nombre>
+        </alumno>
+        <alumno mat="J29" edad="8">
+            <nombre>Antonio García</nombre>
+        </alumno>
+    </alumnos>
+</colegio>
