@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<empresa>
+    <departamento cod="1">
+        <nombre>Informática</nombre>
+        <empleados>
+            <empleado num="1000">
+                <nombre>Manuel Pérez</nombre>
+                <cargo>Programador</cargo>
+            </empleado>
+            <empleado num="2000">
+                <nombre>María González</nombre>
+                <cargo>Analista</cargo>
+            </empleado>
+        </empleados>
+    </departamento>
+    <departamento cod="2">
+        <nombre>Tecnología</nombre>
+        <empleados>
+            <empleado num="3000">
+                <nombre>Ana Rodríguez</nombre>
+                <cargo>Jefa de proyecto</cargo>
+            </empleado>
+        </empleados>
+    </departamento>
+</empresa>
