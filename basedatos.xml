@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<basedatos>
+    <tabla nombre="empleados">
+        <columna pk="1">
+            <nombre>id_emple</nombre>
+            <tipo>integer</tipo>
+        </columna>
+        <columna>
+            <nombre>apellidos</nombre>
+            <tipo>varchar(255)</tipo>
+        </columna>
+        <columna fk="1" ft="departamentos" fpk="id_depart">
+            <nombre>departamento_id</nombre>
+            <tipo>integer</tipo>
+        </columna>
+    </tabla>
+    <tabla nombre="departamentos">
+        <columna pk="1">
+            <nombre>id_depart</nombre>
+            <tipo>integer</tipo>
+        </columna>
+        <columna>
+            <nombre>denominacion</nombre>
+            <tipo>varchar(255)</tipo>
+        </columna>
+    </tabla>
+</basedatos>
+
+<!--
+CREATE TABLE departamentos (id_depart integer PRIMARY KEY, denominacion varchar(255) );
+
+CREATE TABLE empleados (id_emple integer PRIMARY KEY, apellidos varchar(255),
+                        departamento_id integer REFERENCES departamentos (id_depart) );
+-->
