@@ -1,8 +1,5 @@
 import ZODB
 import ZODB.FileStorage
-import persistent
-import transaction
-from basedatos import Empleado, Departamento
 
 almacen = ZODB.FileStorage.FileStorage("departamento.fs")
 bd = ZODB.DB(almacen)

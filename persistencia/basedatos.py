@@ -4,9 +4,8 @@ Ejemplo de prueba con ZODB.
 
 import ZODB
 import ZODB.FileStorage
-import persistent
 import transaction
-from BTrees.OOBTree import OOBTree # type: ignore
+from BTrees.OOBTree import BTree # type: ignore
 from modelo import Empleado, Departamento
 
 
@@ -24,9 +23,11 @@ almacen = ZODB.FileStorage.FileStorage("departamento.fs")
 bd = ZODB.DB(almacen)
 conexion = bd.open()
 raiz = conexion.root()
-raiz["departamentos"] = OOBTree()
+
+raiz["departamentos"] = BTree()
 raiz["departamentos"][d1.numero] = d1
 raiz["departamentos"][d2.numero] = d2
 transaction.commit()
+
 conexion.close()
 bd.close()
