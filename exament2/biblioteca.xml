@@ -1,0 +1,16 @@
+<biblioteca>
+    <categoria nombre="Programación">
+        <libro>
+            <titulo>Python para expertos</titulo>
+            <autor>John Doe</autor>
+            <anyo>2021</anyo>
+        </libro>
+    </categoria>
+    <categoria nombre="Algoritmos">
+        <libro>
+            <titulo>Optimización algorítmica</titulo>
+            <autor>Jane Smith</autor>
+            <anyo>2019</anyo>
+        </libro>
+    </categoria>
+<categoria nombre="Inteligencia artificial"><libro><titulo>Deep Learning con Python</titulo><autor>Alice Johnson</autor><anyo>2023</anyo></libro></categoria></biblioteca>

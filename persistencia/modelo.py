@@ -2,7 +2,7 @@
 Modelo de datos.
 """
 
-from BTrees.OOBTree import OOBTree # type: ignore
+from BTrees.OOBTree import BTree # type: ignore
 
 import persistent
 
@@ -23,7 +23,7 @@ class Departamento(persistent.Persistent):
     def __init__(self, numero: int, nombre: str):
         self.numero = numero
         self.nombre = nombre
-        self.empleados = OOBTree()
+        self.empleados = BTree()
 
     def agregar_empleado(self, empleado):
         """Agrega un empleado al departamento."""
