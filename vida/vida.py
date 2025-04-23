@@ -43,15 +43,7 @@ class Tablero:
         self.__ancho = ancho
         self.__alto = alto
         self.__tamanyo_celda = tamanyo_celda
-        # self.__celdas: list[list[Celda]] = []
-        # for y in range(alto):
-        #     self.__celdas.append([])
-        #     for _ in range(ancho):
-        #         self.__celdas[y].append(Celda(random.choice([False, True])))
-        self.__celdas: list[list[Celda]] = [
-            [Celda(random.choice([False, True])) for _ in range(ancho)]
-            for _ in range(alto)
-        ]
+        self.__celdas: list[list[Celda]] = []
         self.__canvas = tk.Canvas(
             ventana,
             width = ancho * tamanyo_celda,
@@ -59,7 +51,15 @@ class Tablero:
             bg="black"
         )
         self.__canvas.pack()
+        self.__generacion = 0
+        self.__label = tk.Label(ventana, text=self.__texto_label(), font=('Arial', 20))
+        self.__label.pack()
+        self.reiniciar()
         self.dibujar()
+
+    def __texto_label(self) -> str:
+        """Devuelve el texto de la etiqueta."""
+        return f'Generación: {self.__generacion}'
 
     def ancho(self) -> int:
         """Devuelve el ancho del tablero."""
@@ -83,14 +83,8 @@ class Tablero:
         posición (fila, col) del tablero.
         """
         total = 0
-        total += 1 if self.celda(fila - 1, col - 1).esta_viva() else 0
-        total += 1 if self.celda(fila - 1, col).esta_viva() else 0
-        total += 1 if self.celda(fila - 1, col + 1).esta_viva() else 0
-        total += 1 if self.celda(fila, col - 1).esta_viva() else 0
-        total += 1 if self.celda(fila, col + 1).esta_viva() else 0
-        total += 1 if self.celda(fila + 1, col - 1).esta_viva() else 0
-        total += 1 if self.celda(fila + 1, col).esta_viva() else 0
-        total += 1 if self.celda(fila + 1, col + 1).esta_viva() else 0
+        for dx, dy in ((x, y) for x in [-1, 0, 1] for y in [-1, 0, 1] if (x, y) != (0, 0)):
+            total += 1 if self.celda(fila + dy, col + dx).esta_viva() else 0
         return total
 
     def siguiente_generacion(self) -> None:
@@ -107,6 +101,8 @@ class Tablero:
                    (not esta_viva and vecinas_vivas == 3):
                     nuevo_tablero[y][x].revivir()
         self.__celdas = nuevo_tablero
+        self.__generacion += 1
+        self.__label.config(text=self.__texto_label())
 
     def dibujar(self) -> None:
         """Dibuja el tablero en el canvas."""
@@ -120,6 +116,18 @@ class Tablero:
                     y2 = y1 + self.tamanyo_celda()
                     self.__canvas.create_rectangle(x1, y1, x2, y2, fill="white")
 
+    def reiniciar(self):
+        """Establece el estado inicial del juego con celdas aleatorias."""
+        # self.__celdas: list[list[Celda]] = []
+        # for y in range(alto):
+        #     self.__celdas.append([])
+        #     for _ in range(ancho):
+        #         self.__celdas[y].append(Celda(random.choice([False, True])))
+        self.__celdas = [
+            [Celda(random.choice([False, True])) for _ in range(self.ancho())]
+            for _ in range(self.alto())
+        ]
+        self.__generacion = 0
 
 class JuegoDeLaVida(tk.Tk):
     """La clase principal."""
@@ -130,6 +138,11 @@ class JuegoDeLaVida(tk.Tk):
         self.__tablero = Tablero(ancho, alto, tamanyo_celda, self)
         self.__retardo = retardo
         self.after(retardo, self.actualizar)
+        self.bind('<Return>', self.reiniciar)
+
+    def reiniciar(self, _):
+        """Establece el estado inicial del juego cuando el jugador pulsa <Return>."""
+        self.__tablero.reiniciar()
 
     def actualizar(self):
         """Calcula la siguiente generación y la visualiza."""
