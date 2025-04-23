@@ -95,24 +95,17 @@ class Tablero:
 
     def siguiente_generacion(self) -> None:
         """Pasa a la siguiente generación del tablero."""
-        nuevo_tablero: list[list[Celda]] = []
+        nuevo_tablero: list[list[Celda]] = [
+            [Celda(False) for _ in range(self.ancho())]
+            for _ in range(self.alto())
+        ]
         for y in range(self.alto()):
-            nuevo_tablero.append([])
             for x in range(self.ancho()):
                 esta_viva = self.celda(x, y).esta_viva()
                 vecinas_vivas = self.contar_vecinas_vivas(x, y)
-                if esta_viva:
-                    if vecinas_vivas <= 1 or vecinas_vivas > 3:
-                        nuevo_tablero[y].append(Celda(False))
-                    elif vecinas_vivas in [2, 3]:
-                        nuevo_tablero[y].append(Celda(True))
-                    else:
-                        nuevo_tablero[y].append(Celda(False))
-                else:
-                    if vecinas_vivas == 3:
-                        nuevo_tablero[y].append(Celda(True))
-                    else:
-                        nuevo_tablero[y].append(Celda(False))
+                if (esta_viva and vecinas_vivas in [2, 3]) or \
+                   (not esta_viva and vecinas_vivas == 3):
+                    nuevo_tablero[y][x].revivir()
         self.__celdas = nuevo_tablero
 
     def dibujar(self) -> None:
@@ -126,11 +119,6 @@ class Tablero:
                     x2 = x1 + self.tamanyo_celda()
                     y2 = y1 + self.tamanyo_celda()
                     self.__canvas.create_rectangle(x1, y1, x2, y2, fill="white")
-
-
-    def imprimir(self):
-        for l in self.__celdas:
-            print(l)
 
 
 class JuegoDeLaVida(tk.Tk):
