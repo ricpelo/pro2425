@@ -4,7 +4,15 @@ Copyright (c) 2025 Yo.
 Licencia GPL-3.
 """
 
+import tkinter as tk
 import random
+
+
+ANCHO_TABLERO = 60    # Número de celdas horizontales
+ALTO_TABLERO = 60     # Número de celdas verticales
+TAMANYO_CELDA = 10    # Tamaño de cada celda en píxeles horiz. y vert.
+RETARDO = 50          # Retardo en milisegundos entre generaciones
+
 
 class Celda:
     """Una celda del juego."""
@@ -31,9 +39,10 @@ class Celda:
 class Tablero:
     """El tablero del juego de la vida."""
 
-    def __init__(self, ancho: int, alto: int):
+    def __init__(self, ancho: int, alto: int, tamanyo_celda: int, ventana: tk.Tk):
         self.__ancho = ancho
         self.__alto = alto
+        self.__tamanyo_celda = tamanyo_celda
         # self.__celdas: list[list[Celda]] = []
         # for y in range(alto):
         #     self.__celdas.append([])
@@ -43,6 +52,14 @@ class Tablero:
             [Celda(random.choice([False, True])) for _ in range(ancho)]
             for _ in range(alto)
         ]
+        self.__canvas = tk.Canvas(
+            ventana,
+            width = ancho * tamanyo_celda,
+            height = alto * tamanyo_celda,
+            bg="black"
+        )
+        self.__canvas.pack()
+        self.dibujar()
 
     def ancho(self) -> int:
         """Devuelve el ancho del tablero."""
@@ -51,6 +68,10 @@ class Tablero:
     def alto(self) -> int:
         """Devuelve el alto del tablero."""
         return self.__alto
+
+    def tamanyo_celda(self) -> int:
+        """Devuelve el tamaño de la celda en píxeles."""
+        return self.__tamanyo_celda
 
     def celda(self, col: int, fila: int) -> Celda:
         """Devuelve la celda situada en la posición (fila, col) del tablero."""
@@ -76,28 +97,58 @@ class Tablero:
         """Pasa a la siguiente generación del tablero."""
         nuevo_tablero: list[list[Celda]] = []
         for y in range(self.alto()):
-            self.__celdas.append([])
+            nuevo_tablero.append([])
             for x in range(self.ancho()):
                 esta_viva = self.celda(x, y).esta_viva()
                 vecinas_vivas = self.contar_vecinas_vivas(x, y)
                 if esta_viva:
                     if vecinas_vivas <= 1 or vecinas_vivas > 3:
-                        self.__celdas[y][x] = Celda(False)
+                        nuevo_tablero[y].append(Celda(False))
                     elif vecinas_vivas in [2, 3]:
-                        self.__celdas[y][x] = Celda(True)
+                        nuevo_tablero[y].append(Celda(True))
+                    else:
+                        nuevo_tablero[y].append(Celda(False))
                 else:
                     if vecinas_vivas == 3:
-                        self.__celdas[y][x] = Celda(True)
+                        nuevo_tablero[y].append(Celda(True))
                     else:
-                        self.__celdas[y][x] = Celda(False)
+                        nuevo_tablero[y].append(Celda(False))
         self.__celdas = nuevo_tablero
 
+    def dibujar(self) -> None:
+        """Dibuja el tablero en el canvas."""
+        self.__canvas.delete('all')
+        for y in range(self.alto()):
+            for x in range(self.ancho()):
+                if self.celda(x, y).esta_viva():
+                    x1 = x * self.tamanyo_celda()
+                    y1 = y * self.tamanyo_celda()
+                    x2 = x1 + self.tamanyo_celda()
+                    y2 = y1 + self.tamanyo_celda()
+                    self.__canvas.create_rectangle(x1, y1, x2, y2, fill="white")
 
 
-    def celdas(self):
-        return self.__celdas
+    def imprimir(self):
+        for l in self.__celdas:
+            print(l)
 
 
-t = Tablero(3, 5)
-print(t.celdas())
-print(t.celda(2, 1))
+class JuegoDeLaVida(tk.Tk):
+    """La clase principal."""
+
+    def __init__(self, ancho: int, alto: int, tamanyo_celda: int, retardo: int):
+        super().__init__()
+        self.title('Juego de la vida')
+        self.__tablero = Tablero(ancho, alto, tamanyo_celda, self)
+        self.__retardo = retardo
+        self.after(retardo, self.actualizar)
+
+    def actualizar(self):
+        """Calcula la siguiente generación y la visualiza."""
+        self.__tablero.siguiente_generacion()
+        self.__tablero.dibujar()
+        self.after(self.__retardo, self.actualizar)
+
+
+app = JuegoDeLaVida(ANCHO_TABLERO, ALTO_TABLERO, TAMANYO_CELDA, RETARDO)
+app.mainloop()
