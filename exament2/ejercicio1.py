@@ -116,9 +116,9 @@ class Flota:
         """Busca un vehículo por su matrícula."""
         return self.__vehiculos.get(matricula)
 
-    # def vehiculos(self):
-    #     """Devuelve un iterador con los vehículos de la flota."""
-    #     return self.__vehiculos.values()
+    def vehiculos(self):
+        """Devuelve un iterador con los vehículos de la flota."""
+        return self.__vehiculos.values()
 
 
 c1 = Coche('Audi', 'A5', 2022, '4455JJJ', 'Blanco')
@@ -142,7 +142,6 @@ transaction.commit()
 conexion.close()
 bd.close()
 
-"""
 # Comprobación:
 almacen = ZODB.FileStorage.FileStorage("vehiculos.fs")
 bd = ZODB.DB(almacen)
@@ -152,4 +151,3 @@ bd_raiz = conexion.root()
 for flota in bd_raiz['flotas'].values():
     for vehiculo in flota.vehiculos():
         print(f'{vehiculo.marca()} {vehiculo.modelo()} {vehiculo.matricula()}')
-"""
