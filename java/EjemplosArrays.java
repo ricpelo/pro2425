@@ -1,6 +1,6 @@
 public class EjemplosArrays {
     public static void main(String[] args) {
-        int[] a = new int[] { 10, 20, 30, 40, 50 };
+        Integer[] a = new Integer[] { 10, 20, 30, 40, 50 };
         String[] s = new String[] { "Hola", null, "María" };
         StringBuilder[] sb = new StringBuilder[] {
             new StringBuilder("Informática"),
@@ -8,14 +8,26 @@ public class EjemplosArrays {
         };
         int suma;
 
-        for (int i = suma = 0; i < a.length; i++) {
-            suma += a[i];
+        Integer i = 5;                   // auto-boxing
+        int j = i;                       // auto-unboxing
+
+        Integer k = Integer.valueOf(5);  // boxing
+        Integer m = k.intValue();        // unboxing
+
+        System.out.print("La longitud es: ");
+        System.out.println(longitud(a));
+
+
+
+        for (int z = suma = 0; z < a.length; z++) {
+            suma += a[z];
         }
 
         System.out.println(suma);
         imprimirOrdenInverso(a);
+        imprimirOrdenInverso(s);
 
-        if (buscar(new int[0], 50)) {
+        if (buscar(new Integer[0], 50)) {
             System.out.println("Sí está el número");
         } else {
             System.out.println("No está el número");
@@ -34,7 +46,7 @@ public class EjemplosArrays {
 
     }
 
-    public static void imprimirOrdenInverso(int[] ar) {
+    public static <T> void imprimirOrdenInverso(T[] ar) {
         for (int i = ar.length - 1; i >= 0; i--) {
             System.out.println(ar[i]);
         }
@@ -43,21 +55,29 @@ public class EjemplosArrays {
     /* Devuelve true si el valor está dentro del array,
      * o false en caso contrario.
      */
-    public static boolean buscar(int[] ar, int valor) {
+    public static <T> boolean buscar(T[] ar, T valor) {
         for (int i = 0; i < ar.length; i++) {
-            if (ar[i] == valor) {
+            if (ar[i] != null && ar[i].equals(valor)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean buscar(CharSequence[] ar, CharSequence valor) {
-        for (int i = 0; i < ar.length; i++) {
-            if (ar[i] != null && ar[i].toString().equals(valor.toString())) {
-                return true;
-            }
+    // public static boolean buscar(CharSequence[] ar, CharSequence valor) {
+    //     for (int i = 0; i < ar.length; i++) {
+    //         if (ar[i] != null && ar[i].toString().equals(valor.toString())) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    public static <T> int longitud(T[] a) {
+        int res = 0;
+        for (T e : a) {
+            res += 1;
         }
-        return false;
+        return res;
     }
 }
