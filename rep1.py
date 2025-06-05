@@ -32,7 +32,16 @@ def traspuesta(matriz: list[list]) -> list[list]:
     if num_filas == 0:
         return [[]]
     num_columnas = len(matriz[0])
-    return [[matriz[i][j] for i in range(num_filas)] for j in range(num_columnas)]
+    # return [[matriz[i][j] for i in range(num_filas)] for j in range(num_columnas)]
+    res = []
+    for j in range(num_columnas):
+        fila = []
+        for i in range(num_filas):
+            fila.append(matriz[i][j])
+        res.append(fila)
+    return res
+
+
 
 print(traspuesta([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
 print(traspuesta([[8, 7, 4], [2, 9, 5]]))
