@@ -64,6 +64,8 @@ class Aplicacion(tk.Tk):
 
     def comprobar_acierto(self) -> bool:
         """Devuelve True si el jugador ha adivinado la palabra."""
+        return set(self.__palabra_a_adivinar) == self.__adivinadas
+        return not any(c not in self.__adivinadas for c in self.__palabra_a_adivinar)
         for c in self.__palabra_a_adivinar:
             if c not in self.__adivinadas:
                 return False
