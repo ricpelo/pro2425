@@ -34,7 +34,7 @@ class Aplicacion(tk.Tk):
         self.__salir = tk.Button(self, text='Salir', command=self.quit)
         self.__salir.pack()
         self.bind('<Return>', self.probar)
-        self.bind('<Escape>', self.salir)
+        self.bind('<Escape>', lambda event: self.quit())
 
     def reiniciar(self):
         """Inicializa el juego."""
@@ -84,7 +84,7 @@ class Aplicacion(tk.Tk):
                     f'''¡Enhorabuena!
                     La palabra era:
                     {self.__palabra_a_adivinar}'''
-                    )
+                )
                 self.reiniciar()
         else:
             self.__erroneas.add(c)
@@ -98,10 +98,6 @@ class Aplicacion(tk.Tk):
                 )
                 self.reiniciar()
         self.actualizar()
-
-    def salir(self, _):
-        """El método que se ejecuta cuando el usuario pulsa la tecla <Esc>."""
-        self.quit()
 
 
 app = Aplicacion()
